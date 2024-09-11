@@ -1,0 +1,30 @@
+services:
+  dbservice:
+    image: mysql:8.0.32
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=init_db  
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3306:3306  # Standard MySQL port
+    #networks:
+    #  - bootapp
+
+  appservice:  
+    build: .  # Use the current directory as the build context
+    depends_on:
+      - dbservice
+    environment:
+      
+      - MYSQL_HOST=dbservice
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PORT=3306
+    ports:
+      - 8085:8080  
+   # networks:
+     # - bootapp
+
+#networks:
+ # bootapp:
